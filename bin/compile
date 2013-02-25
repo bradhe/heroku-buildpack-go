@@ -67,6 +67,8 @@ echo "-----> Running: go get -tags heroku ./..."
 unset GIT_DIR # unset git dir or it will mess with goinstall
 
 cd $build/src
+echo ".. in $(pwd)"
+echo `ls`
 go get -tags heroku
 
 cd $build
