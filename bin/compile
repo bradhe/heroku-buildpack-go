@@ -21,13 +21,6 @@ virtualenv() {
     python "$buildpack/vendor/virtualenv-1.7/virtualenv.py" "$@"
 }
 
-if ! test -f $build/.godir
-then
-    echo >&2 " !     A .godir is required."
-    echo >&2 " !     See https://gist.github.com/299535bbf56bf3016cba for instructions."
-    exit 1
-fi
-
 if test -e $build/bin && ! test -d $build/bin
 then
     echo >&2 " !     File bin exists and is not a directory."
@@ -69,15 +62,11 @@ then
     echo " done"
 fi
 
-name=$(cat $build/.godir)
-p=$GOPATH/src/$name
-mkdir -p $p
-cp -R $build/* $p
+echo "-----> Running: go get -tags heroku ./..."
 
 unset GIT_DIR # unset git dir or it will mess with goinstall
-echo "-----> Running: go get -tags heroku ./..."
-cd $p
-go get -tags heroku ./...
+cd $GOPATH
+make
 
 mkdir -p $build/bin
 mv $GOPATH/bin/* $build/bin
