@@ -67,7 +67,11 @@ echo "-----> Running: go get -tags heroku ./..."
 unset GIT_DIR # unset git dir or it will mess with goinstall
 
 cd $build
+
+OLD_GOPATH=$GOPATH
+export GOPATH=$build
 go get -tags heroku ./...
+export GOPATH=$OLD_GOPATH
 
 mkdir -p $build/bin
 mv $GOPATH/bin/* $build/bin
